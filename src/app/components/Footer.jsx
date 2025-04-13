@@ -62,13 +62,13 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#603F83] text-[#C7D3D4]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">ToolsHub</h2>
-            <p className="text-[#C7D3D4]/80">
+            <p className="text-gray-500">
               Professional number generation tools for all your needs. Generate random numbers, PINs, and custom patterns with ease.
             </p>
           </div>
@@ -81,7 +81,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-[#C7D3D4]/80 hover:text-white transition-colors"
+                    className="text-gray-500 hover:text-white transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -98,7 +98,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-[#C7D3D4]/80 hover:text-white transition-colors"
+                    className="text-gray-500 hover:text-white transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -117,7 +117,7 @@ const Footer = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#C7D3D4]/80 hover:text-white transition-colors"
+                  className="text-gray-500 hover:text-white transition-colors"
                   aria-label={link.name}
                 >
                   {getSocialIcon(link.icon)}
@@ -128,16 +128,16 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-[#C7D3D4]/20">
+        <div className="mt-8 pt-8 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-[#C7D3D4]/60">
+            <p className="text-sm text-gray-500">
               © {currentYear} ToolsHub. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="/privacy" className="text-[#C7D3D4]/60 hover:text-white transition-colors">
+              <Link href="/privacy" className="text-sm text-gray-500 hover:text-orange-500">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-[#C7D3D4]/60 hover:text-white transition-colors">
+              <Link href="/terms" className="text-sm text-gray-500 hover:text-orange-500">
                 Terms of Service
               </Link>
             </div>

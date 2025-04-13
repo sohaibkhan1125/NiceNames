@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useRef } from 'react';
+import Image from 'next/image';
 
 const Hero = () => {
   const toolsSectionRef = useRef(null);
@@ -52,141 +53,128 @@ const Hero = () => {
     { name: 'Secret Key Generator', icon: '🔐', description: 'Generate cryptographically secure 64-byte secret keys', href: '/secret-key-64-bytes' },
   ];
 
+  const RotateIcon = () => (
+    <div className="relative w-12 h-12 group">
+      <Image
+        src="/rotate.png"
+        alt="Rotate icon"
+        width={48}
+        height={48}
+        className="group-hover:animate-spin-slow"
+      />
+    </div>
+  );
+
   return (
-    <div className="bg-[#603F83] text-[#C7D3D4]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div className="bg-white text-gray-800">
+      <style jsx global>{`
+        @keyframes spin-slow {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(-360deg);
+          }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 1.5s linear infinite;
+        }
+      `}</style>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
-            Professional Generation Tools
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4">
+            Free And Useful Online Data Generators
           </h1>
-          <p className="text-xl sm:text-2xl mb-12 max-w-3xl mx-auto">
-            Generate various types of data for your needs - from numbers to addresses and more.
+          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+            ToolsHub makes it possible to generate useful data with different tools. There are a total of 27 generators in different categories.
           </p>
-          <div className="flex justify-center gap-4 mb-16">
-            <button
-              onClick={scrollToTools}
-              className="bg-[#C7D3D4] cursor-pointer text-[#603F83] px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200"
-            >
-              Explore Tools
-            </button>
-            <Link
-              href="/about"
-              className="border-2 cursor-pointer border-[#C7D3D4] text-[#C7D3D4] px-8 py-3 rounded-lg font-semibold hover:bg-[#C7D3D4] hover:text-[#603F83] transition-all duration-200"
-            >
-              Learn More
-            </Link>
-          </div>
         </div>
 
-        {/* Number Tools Grid */}
-        <div ref={toolsSectionRef} className="mt-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Number Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Number Tools Section */}
+        <div ref={toolsSectionRef} className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">All About Numbers</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
             {numberTools.map((tool, index) => (
               <Link
                 key={index}
                 href={tool.href}
-                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-[#C7D3D4]/20 hover:border-[#C7D3D4]/40 transition-all duration-300"
+                className="flex flex-col items-center p-4 hover:bg-orange-50 rounded-lg transition-colors group border border-gray-200 hover:border-orange-300"
               >
-                <div className="text-4xl mb-4">{tool.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
-                <p className="text-[#C7D3D4]/80">{tool.description}</p>
+                <RotateIcon />
+                <span className="mt-3 text-sm font-medium text-gray-700 text-center">{tool.name}</span>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Address Tools Grid */}
-        <div className="mt-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Address Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Address Tools Section */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Addresses</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
             {addressTools.map((tool, index) => (
               <Link
                 key={index}
                 href={tool.href}
-                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-[#C7D3D4]/20 hover:border-[#C7D3D4]/40 transition-all duration-300"
+                className="flex flex-col items-center p-4 hover:bg-orange-50 rounded-lg transition-colors group border border-gray-200 hover:border-orange-300"
               >
-                <div className="text-4xl mb-4">{tool.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
-                <p className="text-[#C7D3D4]/80">{tool.description}</p>
+                <RotateIcon />
+                <span className="mt-3 text-sm font-medium text-gray-700 text-center">{tool.name}</span>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Developer Tools Grid */}
-        <div className="mt-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Developer Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Developer Tools Section */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Developers</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
             {developerTools.map((tool, index) => (
               <Link
                 key={index}
                 href={tool.href}
-                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-[#C7D3D4]/20 hover:border-[#C7D3D4]/40 transition-all duration-300"
+                className="flex flex-col items-center p-4 hover:bg-orange-50 rounded-lg transition-colors group border border-gray-200 hover:border-orange-300"
               >
-                <div className="text-4xl mb-4">{tool.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
-                <p className="text-[#C7D3D4]/80">{tool.description}</p>
+                <RotateIcon />
+                <span className="mt-3 text-sm font-medium text-gray-700 text-center">{tool.name}</span>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Date and Time Tools Grid */}
-        <div className="mt-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Date and Time Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Date and Time Tools Section */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Date And Time</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
             {dateTimeTools.map((tool, index) => (
               <Link
                 key={index}
                 href={tool.href}
-                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-[#C7D3D4]/20 hover:border-[#C7D3D4]/40 transition-all duration-300"
+                className="flex flex-col items-center p-4 hover:bg-orange-50 rounded-lg transition-colors group border border-gray-200 hover:border-orange-300"
               >
-                <div className="text-4xl mb-4">{tool.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
-                <p className="text-[#C7D3D4]/80">{tool.description}</p>
+                <RotateIcon />
+                <span className="mt-3 text-sm font-medium text-gray-700 text-center">{tool.name}</span>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Hexadecimal Tools Grid */}
-        <div className="mt-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Hexadecimal Tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Hexadecimal Tools Section */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Hexadecimal</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
             {hexadecimalTools.map((tool, index) => (
               <Link
                 key={index}
                 href={tool.href}
-                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-[#C7D3D4]/20 hover:border-[#C7D3D4]/40 transition-all duration-300"
+                className="flex flex-col items-center p-4 hover:bg-orange-50 rounded-lg transition-colors group border border-gray-200 hover:border-orange-300"
               >
-                <div className="text-4xl mb-4">{tool.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
-                <p className="text-[#C7D3D4]/80">{tool.description}</p>
+                <RotateIcon />
+                <span className="mt-3 text-sm font-medium text-gray-700 text-center">{tool.name}</span>
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="text-3xl font-bold mb-2">100%</div>
-            <div className="text-[#C7D3D4]/80">Secure Generation</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold mb-2">24/7</div>
-            <div className="text-[#C7D3D4]/80">Available</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold mb-2">1000+</div>
-            <div className="text-[#C7D3D4]/80">Daily Users</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold mb-2">27+</div>
-            <div className="text-[#C7D3D4]/80">Tools Available</div>
-          </div>
-        </div>
       </div>
     </div>
   );
