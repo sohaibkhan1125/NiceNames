@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -167,159 +167,292 @@ const md5 = (str) => {
   return temp.toLowerCase();
 };
 
-const HashString = () => {
+const HashStringGenerator = () => {
   const [input, setInput] = useState('');
-  const [hashType, setHashType] = useState('md5');
-  const [result, setResult] = useState('');
+  const [algorithm, setAlgorithm] = useState('SHA-256');
+  const [result, setResult] = useState(null);
   const [error, setError] = useState('');
   const [copySuccess, setCopySuccess] = useState('');
+  const [isClient, setIsClient] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const init = () => {
+      try {
+        // Check if crypto API is available
+        if (typeof window !== 'undefined' && window.crypto && window.crypto.subtle) {
+          setIsClient(true);
+          setIsInitialized(true);
+        } else {
+          setError('Your browser does not support cryptographic operations. Please use a modern browser.');
+        }
+      } catch (err) {
+        setError('Error initializing cryptographic operations. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    init();
+  }, []);
 
   const generateHash = async () => {
+    if (!isClient || !input.trim()) return;
+
+    // Reset error and copy success
+    setError('');
+    setCopySuccess('');
+    setResult(null);
+    setIsGenerating(true);
+
     try {
-      if (!input.trim()) {
-        throw new Error('Please enter some text to hash');
-      }
-
-      let hash;
-      if (hashType === 'md5') {
-        hash = md5(input);
-      } else {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(input);
-        const algorithm = hashType === 'sha1' ? 'SHA-1' : hashType === 'sha256' ? 'SHA-256' : 'SHA-512';
-        const hashBuffer = await crypto.subtle.digest(algorithm, data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-      }
-
-      setResult(hash);
-      setError('');
+      const encoder = new TextEncoder();
+      const data = encoder.encode(input);
+      const hashBuffer = await window.crypto.subtle.digest(algorithm, data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      setResult(hashHex);
     } catch (err) {
-      setError('Error generating hash: ' + err.message);
-      setResult('');
+      setError(err.message || 'Error generating hash. Please try again.');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(result);
-    setCopySuccess('Copied to clipboard!');
-    setTimeout(() => setCopySuccess(''), 2000);
+    if (result !== null) {
+      navigator.clipboard.writeText(result)
+        .then(() => {
+          setCopySuccess('Copied!');
+          setTimeout(() => setCopySuccess(''), 2000);
+        })
+        .catch(() => {
+          setCopySuccess('Failed to copy');
+          setTimeout(() => setCopySuccess(''), 2000);
+        });
+    }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen text-gray-800">
+        <Navbar />
+        <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Initializing secure generator...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#603F83] text-[#C7D3D4]">
+    <div className="min-h-screen text-gray-800">
       <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="mb-8">
+      
+      <div className="py-12">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back to Home Button */}
           <Link
             href="/"
-            className="inline-flex items-center text-[#C7D3D4] hover:text-white transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 mb-8"
           >
             <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                fillRule="evenodd"
+                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                clipRule="evenodd"
               />
             </svg>
             Back to Home
           </Link>
-        </div>
 
-        <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-[#C7D3D4]/20">
-          <h1 className="text-3xl font-bold mb-6">Hash String Generator</h1>
-          <p className="mb-8 text-[#C7D3D4]/80">
-            Generate different types of cryptographic hashes from your input text. Choose your preferred hash algorithm and enter the text to hash.
-          </p>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4">Hash String Generator</h1>
+            <p className="text-xl text-gray-600">
+              Generate secure cryptographic hashes for your strings using various algorithms
+            </p>
+          </div>
 
-          <div className="space-y-6">
-            <div>
-              <label htmlFor="hashType" className="block text-lg font-semibold mb-2">
-                Hash Algorithm
-              </label>
-              <select
-                id="hashType"
-                value={hashType}
-                onChange={(e) => setHashType(e.target.value)}
-                className="w-full bg-white/5 border border-[#C7D3D4]/20 rounded-lg px-4 py-3 text-[#C7D3D4] focus:outline-none focus:border-[#C7D3D4]/40"
+          <div className="bg-white rounded-xl p-8 shadow-lg">
+            <div className="space-y-6">
+              <div>
+                <label htmlFor="input" className="block text-lg font-semibold mb-2">
+                  Input String
+                </label>
+                <textarea
+                  id="input"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  rows={4}
+                  placeholder="Enter text to hash..."
+                />
+              </div>
+
+              <div>
+                <label htmlFor="algorithm" className="block text-lg font-semibold mb-2">
+                  Hash Algorithm
+                </label>
+                <select
+                  id="algorithm"
+                  value={algorithm}
+                  onChange={(e) => setAlgorithm(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                >
+                  <option value="SHA-1">SHA-1</option>
+                  <option value="SHA-256">SHA-256</option>
+                  <option value="SHA-384">SHA-384</option>
+                  <option value="SHA-512">SHA-512</option>
+                </select>
+              </div>
+
+              <button
+                onClick={generateHash}
+                disabled={!isInitialized || isGenerating || !input.trim()}
+                className={`w-full bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  !isInitialized || isGenerating || !input.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-orange-600'
+                }`}
               >
-                <option value="md5">MD5</option>
-                <option value="sha1">SHA-1</option>
-                <option value="sha256">SHA-256</option>
-                <option value="sha512">SHA-512</option>
-              </select>
+                {isGenerating ? 'Generating...' : 'Generate Hash'}
+              </button>
             </div>
-
-            <div>
-              <label htmlFor="input" className="block text-lg font-semibold mb-2">
-                Input Text
-              </label>
-              <textarea
-                id="input"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className="w-full bg-white/5 border border-[#C7D3D4]/20 rounded-lg px-4 py-3 text-[#C7D3D4] focus:outline-none focus:border-[#C7D3D4]/40 min-h-[100px]"
-                placeholder="Enter text to hash..."
-              />
-            </div>
-
-            <button
-              onClick={generateHash}
-              className="w-full bg-[#C7D3D4] text-[#603F83] py-3 px-6 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200"
-            >
-              Generate Hash
-            </button>
 
             {error && (
-              <div className="bg-red-500/20 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
+              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
                 {error}
               </div>
             )}
 
-            {result && (
-              <div className="space-y-4">
-                <div className="bg-white/5 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-2">Generated Hash</h3>
-                  <div className="flex items-start justify-between">
-                    <pre className="text-[#C7D3D4]/80 font-mono whitespace-pre-wrap break-all">{result}</pre>
-                    <button
-                      onClick={copyToClipboard}
-                      className="bg-[#C7D3D4] text-[#603F83] py-2 px-4 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 ml-4"
-                    >
-                      Copy
-                    </button>
+            {isInitialized && result !== null && (
+              <div className="mt-6 text-center">
+                <h2 className="text-2xl font-semibold mb-2 text-gray-700">Generated Hash</h2>
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <div className="text-xl font-mono text-gray-800 break-all">
+                    {result}
                   </div>
+                  <button
+                    onClick={copyToClipboard}
+                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+                    title="Copy to clipboard"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                      />
+                    </svg>
+                  </button>
                 </div>
                 {copySuccess && (
-                  <div className="bg-green-500/20 border border-green-500 text-green-500 px-4 py-3 rounded-lg">
-                    {copySuccess}
-                  </div>
+                  <div className="mt-2 text-green-600">{copySuccess}</div>
                 )}
               </div>
             )}
+
+            <div className="mt-8 text-sm text-gray-500">
+              <p className="text-center">
+                Note: This tool generates cryptographic hashes using the Web Crypto API.
+                The input is processed entirely in your browser and is not transmitted anywhere.
+              </p>
+            </div>
           </div>
 
-          <div className="mt-8 text-sm text-[#C7D3D4]/60">
-            <p className="mb-2">About Hash Algorithms:</p>
-            <ul className="list-disc list-inside mt-2">
-              <li>MD5: 128-bit hash, commonly used for checksums</li>
-              <li>SHA-1: 160-bit hash, widely used but considered less secure</li>
-              <li>SHA-256: 256-bit hash, part of SHA-2 family, widely used</li>
-              <li>SHA-512: 512-bit hash, part of SHA-2 family, strongest option</li>
-            </ul>
+          {/* SEO-friendly Description Section */}
+          <div className="mt-12 prose prose-orange max-w-none">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">About Hash String Generator</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                Our Hash String Generator is a specialized tool designed to create cryptographic hashes for your strings. This utility is essential for:
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Generating secure password hashes</li>
+                <li>Creating digital signatures</li>
+                <li>Verifying data integrity</li>
+                <li>Creating unique identifiers</li>
+                <li>Educational purposes</li>
+              </ul>
+              <p>
+                The generator uses the Web Crypto API to create cryptographically secure hashes, making them suitable for various security applications.
+              </p>
+              <p>
+                Our tool provides a simple interface to create secure hashes while ensuring maximum security. Whether you're developing a new application or testing an existing system, this generator provides a reliable solution for your cryptographic needs.
+              </p>
+            </div>
+          </div>
+
+          {/* Educational Content Section */}
+          <div className="mt-12 prose prose-orange max-w-none">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Understanding Cryptographic Hashes</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                Cryptographic hashes are mathematical functions that convert input data into fixed-size strings of characters. Understanding hashes and their applications is crucial for modern security practices.
+              </p>
+              
+              <h3 className="text-xl font-semibold text-gray-700 mt-6 mb-3">Common Uses of Hashes</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  <strong>Password Storage:</strong> Secure storage of user passwords
+                </li>
+                <li>
+                  <strong>Data Integrity:</strong> Verifying that data hasn't been altered
+                </li>
+                <li>
+                  <strong>Digital Signatures:</strong> Creating unique signatures for documents
+                </li>
+                <li>
+                  <strong>Blockchain:</strong> Creating unique identifiers for blocks
+                </li>
+                <li>
+                  <strong>File Verification:</strong> Checking file integrity and authenticity
+                </li>
+              </ul>
+
+              <h3 className="text-xl font-semibold text-gray-700 mt-6 mb-3">Hash Algorithms</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>SHA-1: 160-bit hash (less secure, legacy)</li>
+                <li>SHA-256: 256-bit hash (widely used)</li>
+                <li>SHA-384: 384-bit hash (high security)</li>
+                <li>SHA-512: 512-bit hash (maximum security)</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold text-gray-700 mt-6 mb-3">Best Practices</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Use appropriate hash algorithm for your security needs</li>
+                <li>Always salt passwords before hashing</li>
+                <li>Consider using key derivation functions for passwords</li>
+                <li>Keep up with cryptographic standards and updates</li>
+                <li>Document your hashing practices and requirements</li>
+              </ul>
+
+              <p className="mt-4">
+                Understanding cryptographic hashes and their proper implementation is crucial for effective security practices. Our Hash Generator provides a convenient way to create test hashes while following best practices. Remember to use these hashes responsibly and only for legitimate purposes.
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );
 };
 
-export default HashString;
+export default HashStringGenerator;

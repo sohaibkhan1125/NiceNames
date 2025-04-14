@@ -93,7 +93,7 @@ const Hero = () => {
         {/* Number Tools Section */}
         <div ref={toolsSectionRef} className="mb-12">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">All About Numbers</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             {numberTools.map((tool, index) => (
               <Link
                 key={index}
@@ -110,7 +110,7 @@ const Hero = () => {
         {/* Address Tools Section */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">Addresses</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             {addressTools.map((tool, index) => (
               <Link
                 key={index}
@@ -127,7 +127,7 @@ const Hero = () => {
         {/* Developer Tools Section */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">Developers</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             {developerTools.map((tool, index) => (
               <Link
                 key={index}
@@ -144,7 +144,7 @@ const Hero = () => {
         {/* Date and Time Tools Section */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">Date And Time</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             {dateTimeTools.map((tool, index) => (
               <Link
                 key={index}
@@ -161,7 +161,7 @@ const Hero = () => {
         {/* Hexadecimal Tools Section */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4 text-gray-700">Hexadecimal</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             {hexadecimalTools.map((tool, index) => (
               <Link
                 key={index}

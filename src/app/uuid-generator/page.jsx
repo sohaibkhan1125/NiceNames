@@ -1,158 +1,285 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const UUIDGenerator = () => {
-  const [version, setVersion] = useState('v4');
-  const [result, setResult] = useState('');
+  const [result, setResult] = useState(null);
   const [error, setError] = useState('');
   const [copySuccess, setCopySuccess] = useState('');
+  const [isClient, setIsClient] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const init = () => {
+      try {
+        // Check if crypto API is available
+        if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
+          setIsClient(true);
+          setIsInitialized(true);
+        } else {
+          setError('Your browser does not support secure random number generation. Please use a modern browser.');
+        }
+      } catch (err) {
+        setError('Error initializing secure random number generation. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    init();
+  }, []);
+
+  const generateRandomBytes = (count) => {
+    if (!isClient) return new Uint8Array(count);
+    
+    try {
+      const bytes = new Uint8Array(count);
+      window.crypto.getRandomValues(bytes);
+      return bytes;
+    } catch (err) {
+      setError('Error generating random bytes. Please try again.');
+      return new Uint8Array(count);
+    }
+  };
 
   const generateUUID = () => {
+    if (!isClient) return;
+
+    // Reset error and copy success
+    setError('');
+    setCopySuccess('');
+    setResult(null);
+    setIsGenerating(true);
+
     try {
-      let uuid;
-      switch (version) {
-        case 'v1':
-          // Generate UUID v1 (timestamp-based)
-          const timestamp = Date.now();
-          const random = Math.random().toString(36).substring(2, 10);
-          uuid = `${timestamp}-${random}-${Math.random().toString(36).substring(2, 6)}-${Math.random().toString(36).substring(2, 6)}-${Math.random().toString(36).substring(2, 10)}`;
-          break;
-        case 'v4':
-          // Generate UUID v4 (random)
-          uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 16 | 0;
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-          });
-          break;
-        case 'v5':
-          // Generate UUID v5 (namespace-based)
-          const namespace = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
-          const name = Math.random().toString(36).substring(2);
-          const bytes = new TextEncoder().encode(namespace + name);
-          const hash = crypto.subtle.digest('SHA-1', bytes);
-          const hex = Array.from(new Uint8Array(hash))
-            .map(b => b.toString(16).padStart(2, '0'))
-            .join('');
-          uuid = `${hex.substring(0, 8)}-${hex.substring(8, 12)}-5${hex.substring(13, 16)}-${hex.substring(16, 20)}-${hex.substring(20, 32)}`;
-          break;
-        default:
-          throw new Error('Invalid UUID version');
-      }
+      const bytes = generateRandomBytes(16);
+      
+      // Set version (4) and variant (8, 9, A, or B)
+      bytes[6] = (bytes[6] & 0x0f) | 0x40; // Version 4
+      bytes[8] = (bytes[8] & 0x3f) | 0x80; // Variant 10xx
+
+      // Convert to UUID string format
+      const uuid = Array.from(bytes)
+        .map((b, i) => {
+          if (i === 4 || i === 6 || i === 8 || i === 10) {
+            return '-' + b.toString(16).padStart(2, '0');
+          }
+          return b.toString(16).padStart(2, '0');
+        })
+        .join('');
+
       setResult(uuid);
-      setError('');
     } catch (err) {
-      setError('Error generating UUID: ' + err.message);
-      setResult('');
+      setError(err.message || 'Error generating UUID. Please try again.');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(result);
-    setCopySuccess('Copied to clipboard!');
-    setTimeout(() => setCopySuccess(''), 2000);
+    if (result !== null) {
+      navigator.clipboard.writeText(result)
+        .then(() => {
+          setCopySuccess('Copied!');
+          setTimeout(() => setCopySuccess(''), 2000);
+        })
+        .catch(() => {
+          setCopySuccess('Failed to copy');
+          setTimeout(() => setCopySuccess(''), 2000);
+        });
+    }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen text-gray-800">
+        <Navbar />
+        <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Initializing secure generator...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#603F83] text-[#C7D3D4]">
+    <div className="min-h-screen text-gray-800">
       <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="mb-8">
+      
+      <div className="py-12">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back to Home Button */}
           <Link
             href="/"
-            className="inline-flex items-center text-[#C7D3D4] hover:text-white transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-200 mb-8"
           >
             <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                fillRule="evenodd"
+                d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                clipRule="evenodd"
               />
             </svg>
             Back to Home
           </Link>
-        </div>
 
-        <div className="bg-white/10 backdrop-blur-sm p-8 rounded-xl border border-[#C7D3D4]/20">
-          <h1 className="text-3xl font-bold mb-6">UUID Generator</h1>
-          <p className="mb-8 text-[#C7D3D4]/80">
-            Generate Universally Unique Identifiers (UUIDs) in different versions. Choose your preferred version and click Generate.
-          </p>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4">UUID Generator</h1>
+            <p className="text-xl text-gray-600">
+              Generate secure UUIDs (Universally Unique Identifiers) for your applications
+            </p>
+          </div>
 
-          <div className="space-y-6">
-            <div>
-              <label htmlFor="version" className="block text-lg font-semibold mb-2">
-                UUID Version
-              </label>
-              <select
-                id="version"
-                value={version}
-                onChange={(e) => setVersion(e.target.value)}
-                className="w-full bg-white/5 border border-[#C7D3D4]/20 rounded-lg px-4 py-3 text-[#C7D3D4] focus:outline-none focus:border-[#C7D3D4]/40"
+          <div className="bg-white rounded-xl p-8 shadow-lg">
+            <div className="space-y-6">
+              <button
+                onClick={generateUUID}
+                disabled={!isInitialized || isGenerating}
+                className={`w-full bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                  !isInitialized || isGenerating ? 'opacity-50 cursor-not-allowed' : 'hover:bg-orange-600'
+                }`}
               >
-                <option value="v1">Version 1 (Timestamp-based)</option>
-                <option value="v4">Version 4 (Random)</option>
-                <option value="v5">Version 5 (Namespace-based)</option>
-              </select>
+                {isGenerating ? 'Generating...' : 'Generate UUID'}
+              </button>
             </div>
 
-            <button
-              onClick={generateUUID}
-              className="w-full bg-[#C7D3D4] text-[#603F83] py-3 px-6 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200"
-            >
-              Generate UUID
-            </button>
-
             {error && (
-              <div className="bg-red-500/20 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
+              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
                 {error}
               </div>
             )}
 
-            {result && (
-              <div className="space-y-4">
-                <div className="bg-white/5 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-2">Generated UUID</h3>
-                  <div className="flex items-start justify-between">
-                    <pre className="text-[#C7D3D4]/80 font-mono whitespace-pre-wrap break-all">{result}</pre>
-                    <button
-                      onClick={copyToClipboard}
-                      className="bg-[#C7D3D4] text-[#603F83] py-2 px-4 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 ml-4"
-                    >
-                      Copy
-                    </button>
+            {isInitialized && result !== null && (
+              <div className="mt-6 text-center">
+                <h2 className="text-2xl font-semibold mb-2 text-gray-700">Generated UUID</h2>
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <div className="text-xl font-mono text-gray-800 break-all">
+                    {result}
                   </div>
+                  <button
+                    onClick={copyToClipboard}
+                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+                    title="Copy to clipboard"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                      />
+                    </svg>
+                  </button>
                 </div>
                 {copySuccess && (
-                  <div className="bg-green-500/20 border border-green-500 text-green-500 px-4 py-3 rounded-lg">
-                    {copySuccess}
-                  </div>
+                  <div className="mt-2 text-green-600">{copySuccess}</div>
                 )}
               </div>
             )}
+
+            <div className="mt-8 text-sm text-gray-500">
+              <p className="text-center">
+                Note: This tool generates secure UUIDs using cryptographically secure random number generation.
+                The generated UUIDs are not stored or transmitted anywhere.
+              </p>
+            </div>
           </div>
 
-          <div className="mt-8 text-sm text-[#C7D3D4]/60">
-            <p className="mb-2">About UUID Versions:</p>
-            <ul className="list-disc list-inside mt-2">
-              <li>Version 1: Based on timestamp and node ID</li>
-              <li>Version 4: Randomly generated</li>
-              <li>Version 5: Based on namespace and name</li>
-            </ul>
+          {/* SEO-friendly Description Section */}
+          <div className="mt-12 prose prose-orange max-w-none">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">About UUID Generator</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                Our UUID Generator is a specialized tool designed to create secure UUIDs (Universally Unique Identifiers) for your applications. This utility is essential for:
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Generating unique identifiers for database records</li>
+                <li>Creating unique session tokens</li>
+                <li>Generating unique file names</li>
+                <li>Creating unique API keys</li>
+                <li>Educational purposes</li>
+              </ul>
+              <p>
+                The generator uses cryptographically secure random number generation to create truly unique UUIDs, making them suitable for various applications.
+              </p>
+              <p>
+                Our tool provides a simple interface to create secure UUIDs while ensuring maximum uniqueness. Whether you're developing a new application or testing an existing system, this generator provides a reliable solution for your unique identifier needs.
+              </p>
+            </div>
+          </div>
+
+          {/* Educational Content Section */}
+          <div className="mt-12 prose prose-orange max-w-none">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Understanding UUIDs</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                UUIDs (Universally Unique Identifiers) are 128-bit identifiers that are unique across time and space. Understanding UUIDs and their applications is crucial for modern software development.
+              </p>
+              
+              <h3 className="text-xl font-semibold text-gray-700 mt-6 mb-3">Common Uses of UUIDs</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>
+                  <strong>Database Records:</strong> Unique primary keys for database entries
+                </li>
+                <li>
+                  <strong>Session Management:</strong> Unique session identifiers
+                </li>
+                <li>
+                  <strong>File Systems:</strong> Unique file names and identifiers
+                </li>
+                <li>
+                  <strong>API Keys:</strong> Unique API access tokens
+                </li>
+                <li>
+                  <strong>Distributed Systems:</strong> Unique identifiers across multiple systems
+                </li>
+              </ul>
+
+              <h3 className="text-xl font-semibold text-gray-700 mt-6 mb-3">UUID Versions</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Version 1: Time-based UUID</li>
+                <li>Version 2: DCE security UUID</li>
+                <li>Version 3: MD5 hash-based UUID</li>
+                <li>Version 4: Random UUID (most common)</li>
+                <li>Version 5: SHA-1 hash-based UUID</li>
+              </ul>
+
+              <h3 className="text-xl font-semibold text-gray-700 mt-6 mb-3">Best Practices</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Use appropriate UUID version for your use case</li>
+                <li>Store UUIDs efficiently in databases</li>
+                <li>Consider performance implications</li>
+                <li>Handle UUIDs consistently across systems</li>
+                <li>Document UUID usage and requirements</li>
+              </ul>
+
+              <p className="mt-4">
+                Understanding UUIDs and their proper implementation is crucial for effective software development. Our UUID Generator provides a convenient way to create test UUIDs while following best practices. Remember to use these UUIDs responsibly and only for legitimate purposes.
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );
