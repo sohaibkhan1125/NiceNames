@@ -42,7 +42,7 @@ const DisclaimerPage = () => {
           
           <div className="prose prose-orange max-w-none">
             <p className="text-gray-600 mb-6">
-              The information provided on Tools for Free is for general informational purposes only. All information on the site is provided in good faith, however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the site.
+              The information provided on Tools4Freee is for general informational purposes only. All information on the site is provided in good faith, however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the site.
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">No Liability</h2>
