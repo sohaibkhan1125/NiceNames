@@ -30,14 +30,14 @@ export default function Terms() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
             <p className="text-gray-600">
-              By accessing and using ToolsHub, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our services.
+              By accessing and using Tools4Freee, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our services.
             </p>
           </section>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
             <p className="text-gray-600">
-              ToolsHub provides various data generation tools and utilities. All tools are provided "as is" without any warranties or guarantees.
+              Tools4Freee provides various data generation tools and utilities. All tools are provided "as is" without any warranties or guarantees.
             </p>
           </section>
 
@@ -56,7 +56,7 @@ export default function Terms() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">4. Intellectual Property</h2>
             <p className="text-gray-600">
-              All content and tools on ToolsHub are protected by intellectual property rights. Users may not copy, modify, or distribute our content without permission.
+              All content and tools on Tools4Freee are protected by intellectual property rights. Users may not copy, modify, or distribute our content without permission.
             </p>
           </section>
 
@@ -70,7 +70,7 @@ export default function Terms() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">6. Limitation of Liability</h2>
             <p className="text-gray-600">
-              ToolsHub shall not be liable for any damages arising from the use of our tools or services.
+              Tools4Freee shall not be liable for any damages arising from the use of our tools or services.
             </p>
           </section>
 
