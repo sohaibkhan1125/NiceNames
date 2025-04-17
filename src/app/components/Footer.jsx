@@ -62,85 +62,66 @@ const Footer = () => {
   };
 
   return (
-    <footer className="border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <footer className="bg-orange-500 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold">ToolsHub</h2>
-            <p className="text-gray-500">
-              Professional number generation tools for all your needs. Generate random numbers, PINs, and custom patterns with ease.
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Tools for Free</h3>
+            <p className="text-orange-100">
+              Free online tools for developers and professionals.
             </p>
           </div>
-
-          {/* Tools Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Tools</h3>
+            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {footerLinks.tools.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-500 hover:text-white transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link href="/" className="text-orange-100 hover:text-white">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-orange-100 hover:text-white">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-orange-100 hover:text-white">
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
-
-          {/* Company Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Company</h3>
+            <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-500 hover:text-white transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link href="/privacy-policy" className="text-orange-100 hover:text-white">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-orange-100 hover:text-white">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link href="/cookies" className="text-orange-100 hover:text-white">
+                  Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/disclaimer" className="text-orange-100 hover:text-white">
+                  Disclaimer
+                </Link>
+              </li>
             </ul>
           </div>
-
-          {/* Social Media Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
-            <div className="flex space-x-4">
-              {footerLinks.social.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-white transition-colors"
-                  aria-label={link.name}
-                >
-                  {getSocialIcon(link.icon)}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="mt-8 pt-8 border-t border-gray-200">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-500">
-              © {currentYear} ToolsHub. All rights reserved.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="/privacy" className="text-sm text-gray-500 hover:text-orange-500">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-sm text-gray-500 hover:text-orange-500">
-                Terms of Service
-              </Link>
-            </div>
+            <h3 className="text-lg font-semibold mb-4">Contact</h3>
+            <ul className="space-y-2">
+              <li className="text-orange-100">Email: support@toolsforfree.com</li>
+              <li className="text-orange-100">© {currentYear} Tools for Free</li>
+            </ul>
           </div>
         </div>
       </div>
