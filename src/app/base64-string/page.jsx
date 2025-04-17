@@ -62,7 +62,7 @@ const Base64StringGenerator = () => {
 
   return (
     <div className="min-h-screen text-gray-800">
-      <Navbar />
+     
       
       <div className="bg-[#f5f7ff] rounded-xl p-8 shadow-[0_0_20px_rgba(0,0,0,0.1)] hover:shadow-[0_0_30px_rgba(0,0,0,0.15)] transition-all duration-300">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -112,7 +112,7 @@ const Base64StringGenerator = () => {
               <button
                 onClick={generateBase64}
                 disabled={!isInitialized || isGenerating}
-                className={`w-full bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
+                className={`w-full bg-orange-500 cursor-pointer text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 ${
                   !isInitialized || isGenerating ? 'opacity-50 cursor-not-allowed' : 'hover:bg-orange-600'
                 }`}
               >
@@ -135,7 +135,7 @@ const Base64StringGenerator = () => {
                   </div>
                   <button
                     onClick={copyToClipboard}
-                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+                    className="p-2 cursor-pointer rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
                     title="Copy to clipboard"
                   >
                     <svg
@@ -244,7 +244,7 @@ const Base64StringGenerator = () => {
         </div>
       </div>
 
-      <Footer />
+     
     </div>
   );
 };

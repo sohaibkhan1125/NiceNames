@@ -119,7 +119,7 @@ const NumberGenerator = () => {
             <div className="flex justify-center mb-8">
               <button
                 onClick={generateNumber}
-                className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200"
+                className="bg-orange-500 cursor-pointer text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200"
               >
                 Generate Random Number
               </button>
@@ -132,7 +132,7 @@ const NumberGenerator = () => {
                   <div className="text-6xl font-bold text-gray-800">{result}</div>
                   <button
                     onClick={copyToClipboard}
-                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+                    className="p-2 rounded-lg cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
                     title="Copy to clipboard"
                   >
                     <svg

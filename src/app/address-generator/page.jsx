@@ -113,7 +113,7 @@ const AddressGenerator = () => {
               <div className="flex gap-4">
                 <button
                   onClick={() => setCountry('US')}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                  className={`px-4 py-2 cursor-pointer rounded-lg font-semibold transition-all duration-200 ${
                     country === 'US'
                       ? 'bg-orange-500 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -123,7 +123,7 @@ const AddressGenerator = () => {
                 </button>
                 <button
                   onClick={() => setCountry('UK')}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                  className={`px-4 py-2 cursor-pointer rounded-lg font-semibold transition-all duration-200 ${
                     country === 'UK'
                       ? 'bg-orange-500 text-white'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -134,7 +134,7 @@ const AddressGenerator = () => {
               </div>
               <button
                 onClick={generateAddress}
-                className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200"
+                className="bg-orange-500 cursor-pointer text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-200"
               >
                 Generate Address
               </button>
@@ -155,7 +155,7 @@ const AddressGenerator = () => {
                   </div>
                   <button
                     onClick={copyToClipboard}
-                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+                    className="p-2 rounded-lg cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
                     title="Copy to clipboard"
                   >
                     <svg
