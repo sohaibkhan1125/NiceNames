@@ -12,7 +12,9 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Logo />
+              <Link href="/" className="text-2xl font-bold text-white hover:text-orange-100 transition-colors duration-200">
+                Tools for Free
+              </Link>
             </div>
           </div>
 
@@ -20,31 +22,31 @@ const Navbar = () => {
           <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
             <Link
               href="/"
-              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100"
+              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               Home
             </Link>
             <Link
               href="/about"
-              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100"
+              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100"
+              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               Contact
             </Link>
             <Link
               href="/privacy-policy"
-              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100"
+              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
-              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100"
+              className="inline-flex items-center px-1 pt-1 text-sm font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               Terms
             </Link>
@@ -54,7 +56,7 @@ const Navbar = () => {
           <div className="flex items-center sm:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-orange-100 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-orange-100 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white transition-colors duration-200"
             >
               <span className="sr-only">Open main menu</span>
               {!isMenuOpen ? (
@@ -101,31 +103,31 @@ const Navbar = () => {
           <div className="pt-2 pb-3 space-y-1">
             <Link
               href="/"
-              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100"
+              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               Home
             </Link>
             <Link
               href="/about"
-              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100"
+              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100"
+              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               Contact
             </Link>
             <Link
               href="/privacy-policy"
-              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100"
+              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms"
-              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100"
+              className="block pl-3 pr-4 py-2 text-base font-medium text-white hover:text-orange-100 transition-colors duration-200"
             >
               Terms
             </Link>
