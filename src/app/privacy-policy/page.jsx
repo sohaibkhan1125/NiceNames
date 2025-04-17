@@ -30,7 +30,7 @@ export default function PrivacyPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
             <p className="text-gray-600">
-              At GeneratePlus, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website and services.
+              At Tools4Freee, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our website and services.
             </p>
           </section>
 
