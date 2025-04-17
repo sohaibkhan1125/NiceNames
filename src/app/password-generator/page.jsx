@@ -4,6 +4,38 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Metadata } from 'next';
+
+export const metadata = {
+  title: 'Secure Password Generator | Tools4Freee - Create Strong Passwords',
+  description: 'Generate strong, secure passwords with our free online password generator. Customize length, include special characters, numbers, and uppercase letters for maximum security.',
+  keywords: 'password generator, secure password, strong password, random password, password creation, password tool, free password generator, secure password generator',
+  openGraph: {
+    title: 'Secure Password Generator | Tools4Freee',
+    description: 'Generate strong, secure passwords with our free online password generator. Customize length and complexity for maximum security.',
+    url: 'https://tools4freee.com/password-generator',
+    siteName: 'Tools4Freee',
+    images: [
+      {
+        url: 'https://tools4freee.com/og-password.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Tools4Freee Password Generator',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Secure Password Generator | Tools4Freee',
+    description: 'Generate strong, secure passwords with our free online password generator.',
+    images: ['https://tools4freee.com/twitter-password.jpg'],
+  },
+  alternates: {
+    canonical: 'https://tools4freee.com/password-generator',
+  },
+};
 
 const PasswordGenerator = () => {
   const [length, setLength] = useState(12);

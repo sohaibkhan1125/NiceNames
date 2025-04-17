@@ -49,7 +49,7 @@ const NumberGenerator = () => {
 
   return (
     <div className="min-h-screen text-gray-800">
-      <Navbar />
+     
       
       <div className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,7 +73,7 @@ const NumberGenerator = () => {
             Back to Home
           </Link>
 
-          <div className="text-center mb-12 ">
+          <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">Random Number Generator</h1>
             <p className="text-xl text-gray-600">
               Generate random numbers within your specified range
@@ -236,7 +236,7 @@ const NumberGenerator = () => {
         </div>
       </div>
 
-      <Footer />
+      
     </div>
   );
 };

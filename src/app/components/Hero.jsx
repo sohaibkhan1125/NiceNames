@@ -86,7 +86,7 @@ const Hero = () => {
             Free And Useful Online Data Generators
           </h1>
           <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-            ToolsHub makes it possible to generate useful data with different tools. There are a total of 27 generators in different categories.
+            Tools4Freee makes it possible to generate useful data with different tools. There are a total of 27 generators in different categories.
           </p>
         </div>
 

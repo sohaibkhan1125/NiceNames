@@ -1,9 +1,16 @@
 'use client';
 
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const [isClient, setIsClient] = useState(false);
+  const [currentYear, setCurrentYear] = useState('');
+
+  useEffect(() => {
+    setIsClient(true);
+    setCurrentYear(new Date().getFullYear().toString());
+  }, []);
 
   const footerLinks = {
     tools: [
@@ -66,63 +73,67 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-2xl font-bold mb-4">Tools for Free</h3>
+            <h3 className="text-2xl font-bold mb-4">Tools4Freee</h3>
             <p className="text-orange-100">
               Free online tools for developers and professionals.
             </p>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-orange-100 hover:text-white">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-orange-100 hover:text-white">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-orange-100 hover:text-white">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/privacy-policy" className="text-orange-100 hover:text-white">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-orange-100 hover:text-white">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/cookies" className="text-orange-100 hover:text-white">
-                  Cookie Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/disclaimer" className="text-orange-100 hover:text-white">
-                  Disclaimer
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
-            <ul className="space-y-2">
-              <li className="text-orange-100">Email: support@toolsforfree.com</li>
-              <li className="text-orange-100">© {currentYear} Tools for Free</li>
-            </ul>
-          </div>
+          {isClient && (
+            <>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/" className="text-orange-100 hover:text-white transition-colors duration-200">
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/about" className="text-orange-100 hover:text-white transition-colors duration-200">
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/contact" className="text-orange-100 hover:text-white transition-colors duration-200">
+                      Contact
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Legal</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/privacy-policy" className="text-orange-100 hover:text-white transition-colors duration-200">
+                      Privacy Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/terms" className="text-orange-100 hover:text-white transition-colors duration-200">
+                      Terms of Service
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/cookies" className="text-orange-100 hover:text-white transition-colors duration-200">
+                      Cookie Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/disclaimer" className="text-orange-100 hover:text-white transition-colors duration-200">
+                      Disclaimer
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Contact</h3>
+                <ul className="space-y-2">
+                  <li className="text-orange-100">Email: asatechinfilimited@gmail.com</li>
+                  <li className="text-orange-100">© {currentYear} Tools4Freee. All rights reserved.</li>
+                </ul>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </footer>

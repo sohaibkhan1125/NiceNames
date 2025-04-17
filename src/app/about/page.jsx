@@ -7,13 +7,13 @@ import Footer from '../components/Footer';
 export default function About() {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl font-bold mb-4">About ToolsHub</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-4">About Tools4Freee</h1>
             <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-              ToolsHub is your go-to platform for all your data generation needs. We provide a comprehensive suite of tools designed to make your work easier and more efficient.
+              Tools4Freee is your go-to platform for all your data generation needs. We provide a comprehensive suite of tools designed to make your work easier and more efficient.
             </p>
           </div>
 
@@ -34,7 +34,7 @@ export default function About() {
           </div>
 
           <div className="mt-12">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Why Choose ToolsHub?</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-center">Why Choose Tools4Freee?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="p-6 border border-gray-200 rounded-lg text-center">
                 <h3 className="text-lg font-semibold mb-3">Easy to Use</h3>
@@ -69,7 +69,7 @@ export default function About() {
           </div>
         </div>
       </main>
-      <Footer />
+    
     </div>
   );
 }
